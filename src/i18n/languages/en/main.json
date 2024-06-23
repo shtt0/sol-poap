@@ -168,6 +168,6 @@
     "create_nft": "Create NFT",
     "nft_name": "NFT Name",
     "nft_description": "NFT Description",
-    "nft_symbol": "NFT Image"
+    "nft_symbol": "NFT Symbol"
   }
 }
