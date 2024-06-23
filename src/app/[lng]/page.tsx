@@ -42,7 +42,7 @@ const MyPage: React.FC<PageParams> = ({ params: { lng } }) => {
           "https://arweave.net/5PGFryeL2J8YkcehPQzEmgQCfD438F1Iws-ZcPFKwDg", // 固定された画像URL
         attributes: [], // 他の属性が必要であれば追加してください
       };
-      const tokenID = await createNFTUsingAkord(data); // Akordにデータを保存し、NFTを作成
+      const tokenID = await createNFTUsingAkord(data, wallet); // Akordにデータを保存し、NFTを作成
       const url = `https://core.metaplex.com/explorer/${tokenID}?env=devnet`;
       setExplorerURL(url); // エクスプローラのURLを状態に保存
     } catch (error) {
