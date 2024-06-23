@@ -34,3 +34,23 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+「.env.local」の「NEXT_PUBLIC_PAYER_SECRET_KEY」に秘密鍵を入れます。
+
+不明な場合は、solana playground でこちらを「client.ts」に入れて実行しましょう。
+
+```
+import { Keypair } from "@solana/web3.js";
+
+const testKeypair = new Keypair();
+
+console.log("wallet address", testKeypair.publicKey.toBase58());
+
+// Convert the secret key Uint8Array to a comma-separated string and enclose it in square brackets
+const secretKeyString = `[${Array.from(testKeypair.secretKey).toString()}]`;
+
+console.log("secret key", secretKeyString);
+
+```
+
+得られた wallet address に対して、テストトークンを入れて、ここで得られた秘密鍵を設定してください。
