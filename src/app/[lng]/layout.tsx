@@ -51,26 +51,6 @@ const RootLayout: React.FC<LayoutParams> = ({ children, params: { lng } }) => {
                 <div className="flex items-center space-x-7 text-sm"></div>
                 <div className="flex items-center space-x-4">
                   <LngButton lng={lng} />
-                  <Link
-                    href="/mypage"
-                    className="text-white bg-blue-600 min-w-32 hover:bg-blue-700 rounded-lg py-2 px-4 flex items-center ml-4 text-sm h-12"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mr-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5.121 17.804A13.937 13.937 0 0112 15c2.64 0 5.145.759 7.121 2.021M15 11a3 3 0 11-6 0 3 3 0 016 0zm-3-7a9 9 0 100 18 9 9 0 000-18z"
-                      />
-                    </svg>
-                    {t("layout.mypage")}
-                  </Link>
                   <WalletMultiButton />
                 </div>
               </nav>
