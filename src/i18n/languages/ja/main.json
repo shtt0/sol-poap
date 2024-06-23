@@ -129,7 +129,7 @@
     "register_profile": "プロフィールを登録",
     "transfer_history_mypage": "転送履歴",
     "received_history_mypage": "受信履歴",
-    "issue_nft": "寄付証明のNFTを発行",
+    "issue_nft": "NFTを発行",
     "processing": "処理中...",
     "nft_reflection_message": "Arweaveにファイルを保存するため、NFTの反映には約5分かかります。",
     "view_on_explorer": "エクスプローラーで見る",
@@ -164,6 +164,10 @@
       "showLess": "表示を減らす",
       "totalAmount": "合計金額",
       "monthlyTotal": "月額合計"
-    }
+    },
+    "create_nft": "NFTを作成",
+    "nft_name": "NFT名",
+    "nft_description": "NFTの説明",
+    "nft_symbol": "NFTシンボル"
   }
 }

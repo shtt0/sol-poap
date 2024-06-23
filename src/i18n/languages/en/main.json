@@ -129,7 +129,7 @@
     "register_profile": "Register Your Profile",
     "transfer_history_mypage": "Transfer History",
     "received_history_mypage": "Received History",
-    "issue_nft": "Issue NFT for Donation Proof",
+    "issue_nft": "Issue NFT",
     "processing": "Processing...",
     "nft_reflection_message": "It takes about 5 minutes to reflect the NFT due to file saving on Arweave.",
     "view_on_explorer": "View on Explorer",
@@ -164,6 +164,10 @@
       "showLess": "Show Less",
       "totalAmount": "Total Amount",
       "monthlyTotal": "Monthly Total Amount"
-    }
+    },
+    "create_nft": "Create NFT",
+    "nft_name": "NFT Name",
+    "nft_description": "NFT Description",
+    "nft_symbol": "NFT Image"
   }
 }

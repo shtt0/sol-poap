@@ -129,7 +129,7 @@
     "register_profile": "Зареєструйте свій профіль",
     "transfer_history_mypage": "Історія переказів",
     "received_history_mypage": "Історія отриманих",
-    "issue_nft": "Випустити NFT для підтвердження пожертвування",
+    "issue_nft": "Випуск NFT",
     "processing": "Обробка...",
     "nft_reflection_message": "На відображення NFT йде приблизно 5 хвилин через збереження файлу на Arweave.",
     "view_on_explorer": "Переглянути в Explorer",
@@ -164,6 +164,10 @@
       "showLess": "Показати менше",
       "totalAmount": "Загальна сума",
       "monthlyTotal": "Щомісячна загальна сума"
-    }
+    },
+    "create_nft": "Створити NFT",
+    "nft_name": "Назва NFT",
+    "nft_description": "Опис NFT",
+    "nft_symbol": "Символ NFT"
   }
 }
