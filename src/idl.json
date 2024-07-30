@@ -1,34 +1,29 @@
 {
-  "address": "H5U88wk7D8Qj7KeztdrJJcWqLwAgZLyMVozrigd2D1Ue",
+  "address": "ZzMUp5YVGtW8R4FnAp8KxGCHKp6obbKKGfKqtb9bLWU",
   "version": "0.1.0",
-  "name": "counter",
+  "name": "poap_program",
   "instructions": [
     {
-      "name": "createCounter",
+      "name": "issuePoap",
       "accounts": [
-        { "name": "authority", "isMut": true, "isSigner": true },
-        { "name": "counter", "isMut": true, "isSigner": false },
+        { "name": "issuer", "isMut": true, "isSigner": true },
+        { "name": "recipient", "isMut": false, "isSigner": false },
+        { "name": "poap", "isMut": true, "isSigner": false },
         { "name": "systemProgram", "isMut": false, "isSigner": false }
       ],
-      "args": []
-    },
-    {
-      "name": "updateCounter",
-      "accounts": [
-        { "name": "authority", "isMut": false, "isSigner": true },
-        { "name": "counter", "isMut": true, "isSigner": false }
-      ],
-      "args": []
+      "args": [{ "name": "comment", "type": "string" }]
     }
   ],
   "accounts": [
     {
-      "name": "Counter",
+      "name": "POAPAccount",
       "type": {
         "kind": "struct",
         "fields": [
-          { "name": "authority", "type": "publicKey" },
-          { "name": "count", "type": "u64" }
+          { "name": "issuer", "type": "publicKey" },
+          { "name": "recipient", "type": "publicKey" },
+          { "name": "comment", "type": "string" },
+          { "name": "timestamp", "type": "i64" }
         ]
       }
     }

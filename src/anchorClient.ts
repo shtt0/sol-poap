@@ -1,85 +1,80 @@
 import * as anchor from "@coral-xyz/anchor";
-import { PublicKey, Connection } from "@solana/web3.js";
-
-import IDL from "./idl.json";
-import { Program } from "@coral-xyz/anchor";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
+import { Connection, PublicKey, SystemProgram } from "@solana/web3.js";
+import idl from "./idl.json";
 
-const programId_counter = new PublicKey(
-  "H5U88wk7D8Qj7KeztdrJJcWqLwAgZLyMVozrigd2D1Ue"
-);
+const programId = new PublicKey("ZzMUp5YVGtW8R4FnAp8KxGCHKp6obbKKGfKqtb9bLWU");
 
-function createProvider(wallet: AnchorWallet, connection: Connection) {
+export const getProgram = (wallet: AnchorWallet, connection: Connection) => {
   const provider = new anchor.AnchorProvider(connection, wallet, {
-    commitment: "confirmed",
+    preflightCommitment: "processed",
   });
-  anchor.setProvider(provider);
-  return provider;
-}
+  return new anchor.Program(idl as anchor.Idl, programId, provider);
+};
 
-export async function createCounter(
+export const issuePoap = async (
   wallet: AnchorWallet,
-  connection: Connection
-) {
-  const provider = createProvider(wallet, connection);
-  const program = new Program(IDL, programId_counter, provider);
+  connection: Connection,
+  recipientAddress: string,
+  comment: string
+) => {
+  const program = getProgram(wallet, connection);
+  const recipient = new PublicKey(recipientAddress);
 
-  const [counter] = PublicKey.findProgramAddressSync(
-    [wallet.publicKey.toBytes()],
-    program.programId
-  );
-  console.log("counter", counter.toString());
-
-  return await program.methods
-    .createCounter()
-    .accounts({
-      authority: wallet.publicKey,
-      counter: counter,
-      systemProgram: anchor.web3.SystemProgram.programId,
-    })
-    .rpc();
-}
-
-export async function fetchCounter(
-  wallet: AnchorWallet,
-  connection: Connection
-) {
-  const provider = createProvider(wallet, connection);
-  const program = new Program(IDL, programId_counter, provider);
-
-  const [counter] = PublicKey.findProgramAddressSync(
-    [wallet.publicKey.toBytes()],
+  const [poapAccount] = await PublicKey.findProgramAddressSync(
+    [Buffer.from("poap"), wallet.publicKey.toBuffer(), recipient.toBuffer()],
     program.programId
   );
 
-  const counterAccount = await program.account.counter.fetch(counter);
-  console.log(
-    "Counter account data:",
-    (counterAccount as any).count.toNumber()
-  );
+  try {
+    await program.methods
+      .issuePoap(comment)
+      .accounts({
+        issuer: wallet.publicKey,
+        recipient: recipient,
+        poap: poapAccount,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
 
-  return counterAccount as { count: anchor.BN };
+    console.log("POAP issued successfully");
+  } catch (error) {
+    console.error("Error issuing POAP:", error);
+    throw error;
+  }
+};
+
+export interface POAPData {
+  issuer: PublicKey;
+  recipient: PublicKey;
+  comment: string;
+  timestamp: number;
 }
 
-export async function updateCounter(
+export const fetchUserPoaps = async (
   wallet: AnchorWallet,
   connection: Connection
-) {
-  const provider = createProvider(wallet, connection);
-  const program = new Program(IDL, programId_counter, provider);
+): Promise<POAPData[]> => {
+  const program = getProgram(wallet, connection);
 
-  const [counter] = PublicKey.findProgramAddressSync(
-    [wallet.publicKey.toBytes()],
-    program.programId
-  );
+  try {
+    const poaps = await program.account.pOAPAccount.all([
+      {
+        memcmp: {
+          offset: 8, // Discriminator
+          bytes: wallet.publicKey.toBase58(),
+        },
+      },
+    ]);
 
-  const tx = await program.methods
-    .updateCounter() // Assuming updateCounter increments by 1
-    .accounts({
-      counter: counter,
-    })
-    .rpc();
-  console.log("Your transaction signature", tx);
-
-  return tx;
-}
+    return poaps.map((poap) => ({
+      issuer: poap.account.issuer,
+      recipient: poap.account.recipient,
+      comment: poap.account.comment,
+      timestamp: poap.account.timestamp.toNumber(),
+    }));
+  } catch (error) {
+    console.error("Error fetching POAPs:", error);
+    throw error;
+  }
+};
