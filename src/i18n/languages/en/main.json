@@ -166,8 +166,9 @@
       "monthlyTotal": "Monthly Total Amount"
     },
     "create_nft": "Create NFT",
-    "nft_name": "NFT Name",
-    "nft_description": "NFT Description",
-    "nft_symbol": "NFT Symbol"
+    "nft_name": "Hackathon/Event Name",
+    "nft_description": "Reccomendation Comment (Less than 300 characters)",
+    "nft_symbol": "From/To",
+    "nft_image": "Commemorative Photo"
   }
 }

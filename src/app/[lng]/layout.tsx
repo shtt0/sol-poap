@@ -33,14 +33,15 @@ const RootLayout: React.FC<LayoutParams> = ({ children, params: { lng } }) => {
     <html lang={lng} dir={dir(lng)}>
       <body>
         <AppWalletProvider>
-          <header className="z-20 p-4 bg-white shadow-md border-b opacity-90 w-full fixed">
+          <header className="z-20 p-4 bg-black shadow-md border-b opacity-90 w-full fixed">
             <div className="px-2 mx-auto flex justify-between items-center">
               <Link href="/" className="flex items-center space-x-2">
-                <img
-                  src="/images/logo_image.svg"
+                {/* <img
+                  src="/images/logo.png"
+                  // src="/images/logo_image.svg"
                   alt="Logo Image"
                   className="h-9 w-9"
-                />
+                /> */}
                 <img
                   src="/images/logo.svg"
                   alt="Logo Text"
@@ -57,12 +58,12 @@ const RootLayout: React.FC<LayoutParams> = ({ children, params: { lng } }) => {
             </div>
           </header>
           <main>{children}</main>
-          <footer className="bg-baseblue text-white py-6 pb-24">
+          <footer className="bg-baseblack text-white py-6 pb-24">
             <div className="container mx-auto flex justify-start items-center">
               <Link href="/" passHref>
                 <div className="flex items-center cursor-pointer">
                   <img
-                    src="/images/footer_logo.png"
+                    src="/images/logo.svg"
                     alt={t("layout.footer_logo_alt")}
                     width={250}
                     height={80}

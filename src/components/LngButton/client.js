@@ -23,7 +23,7 @@ export const LngButton = ({ lng }) => {
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-white rounded-md shadow-sm hover:bg-gray-50 focus:outline-none"
+        className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-black rounded-md shadow-sm hover:bg-gray-50 focus:outline-none"
       >
         <img
           src={imgLabels[lng]}
@@ -45,7 +45,7 @@ export const LngButton = ({ lng }) => {
         </svg>
       </button>
       {isOpen && (
-        <div className="absolute right-0 z-10 mt-2 w-20 bg-white rounded-md shadow-lg">
+        <div className="absolute right-0 z-10 mt-2 w-20 bg-baseblue rounded-md shadow-lg">
           {Object.keys(imgLabels).map((label) => (
             <Link key={label} href={getLink(label)} passHref>
               <button

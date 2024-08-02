@@ -1,28 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { useTranslation } from "@/i18n/client";
 import { createNFTUsingAkord } from "../../components/utils";
 import { PageParams } from "../../types/params";
-import { ClipLoader } from "react-spinners"; // スピナーをインポート
+import { ClipLoader } from "react-spinners";
 
 const MyPage: React.FC<PageParams> = ({ params: { lng } }) => {
   const wallet = useAnchorWallet();
   const { connection } = useConnection();
   const { t } = useTranslation(lng, "my_page");
-  const [isLoading, setIsLoading] = useState(false); // ローディング状態を追加
+  const [isLoading, setIsLoading] = useState(false);
   const [explorerURL, setExplorerURL] = useState<string | null>(null);
   const [nftData, setNftData] = useState({
     name: "",
     symbol: "",
     description: "",
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNftData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
   };
 
   const createNFT = async () => {
@@ -32,23 +40,28 @@ const MyPage: React.FC<PageParams> = ({ params: { lng } }) => {
         return;
       }
 
-      setIsLoading(true); // ボタンを押した後にローディング状態を設定
+      if (!imageFile) {
+        console.error("No image file selected");
+        return;
+      }
+
+      setIsLoading(true);
 
       const data = {
         name: nftData.name,
         symbol: nftData.symbol,
         description: nftData.description,
-        image:
-          "https://arweave.net/5PGFryeL2J8YkcehPQzEmgQCfD438F1Iws-ZcPFKwDg", // 固定された画像URL
-        attributes: [], // 他の属性が必要であれば追加してください
+        imageInput: imageFile,
+        attributes: [],
       };
-      const tokenID = await createNFTUsingAkord(data, wallet); // Akordにデータを保存し、NFTを作成
+
+      const tokenID = await createNFTUsingAkord(data, wallet);
       const url = `https://core.metaplex.com/explorer/${tokenID}?env=devnet`;
-      setExplorerURL(url); // エクスプローラのURLを状態に保存
+      setExplorerURL(url);
     } catch (error) {
-      console.error("Error saving JSON to Akord: ", error);
+      console.error("Error creating NFT:", error);
     } finally {
-      setIsLoading(false); // 処理が完了した後にローディング状態を解除
+      setIsLoading(false);
     }
   };
 
@@ -58,7 +71,7 @@ const MyPage: React.FC<PageParams> = ({ params: { lng } }) => {
 
   return (
     <div className="min-h-screen bg-kumogray flex items-center justify-center p-4">
-      <div className="max-w-5xl w-full bg-white p-8 rounded-lg shadow-lg ">
+      <div className="max-w-5xl w-full bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-6">{t("my_page.create_nft")}</h1>
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -96,6 +109,18 @@ const MyPage: React.FC<PageParams> = ({ params: { lng } }) => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
+        <div className="mb-6">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            {t("my_page.nft_image")}
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            ref={fileInputRef}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
 
         <div className="flex justify-center mt-4">
           <button
@@ -109,7 +134,7 @@ const MyPage: React.FC<PageParams> = ({ params: { lng } }) => {
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
-                <ClipLoader size={24} color={"#ffffff"} loading={isLoading} />
+                <ClipLoader size={24} color={"#fffff"} loading={isLoading} />
                 <span className="ml-2">{t("my_page.processing")}</span>
               </div>
             ) : (
